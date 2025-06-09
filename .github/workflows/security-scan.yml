@@ -1,4 +1,4 @@
-name: Terraform Security Scan
+name: Security Scans
 
 on:
   push:
@@ -7,19 +7,29 @@ on:
     branches: [dev]
 
 jobs:
-  terrascan:
-    name: Run Terrascan
+  security-scan:
     runs-on: ubuntu-latest
+    name: Run Security Scans
 
     steps:
-      - name: Checkout infrastructure code
+      - name: Checkout Infra Code
         uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
 
       - name: Install Terrascan
         run: |
-          curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep browser_download_url | grep linux_amd64.tar.gz | cut -d '"' -f 4)" -o terrascan.tar.gz
-          tar -xzf terrascan.tar.gz terrascan
+          echo "Downloading Terrascan..."
+          curl -s https://api.github.com/repos/tenable/terrascan/releases/latest \
+          | grep "browser_download_url.*linux_amd64.tar.gz" \
+          | cut -d '"' -f 4 \
+          | xargs curl -L -o terrascan.tar.gz
+          tar -xzf terrascan.tar.gz
           sudo mv terrascan /usr/local/bin/
+          terrascan version
 
-      - name: Scan Terraform code with Terrascan
-        run: terrascan scan -t aws -i terraform -d .
+      - name: Run Terrascan
+        run: |
+          echo "Scanning EKS Terraform infrastructure code..."
+          terrascan scan -d ./eks-automode-pipeline
