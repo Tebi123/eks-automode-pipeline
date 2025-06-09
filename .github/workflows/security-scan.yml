@@ -1,0 +1,25 @@
+name: Terraform Security Scan
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev]
+
+jobs:
+  terrascan:
+    name: Run Terrascan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout infrastructure code
+        uses: actions/checkout@v4
+
+      - name: Install Terrascan
+        run: |
+          curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep browser_download_url | grep linux_amd64.tar.gz | cut -d '"' -f 4)" -o terrascan.tar.gz
+          tar -xzf terrascan.tar.gz terrascan
+          sudo mv terrascan /usr/local/bin/
+
+      - name: Scan Terraform code with Terrascan
+        run: terrascan scan -t aws -i terraform -d .

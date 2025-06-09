@@ -1,0 +1,10 @@
+repos:
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.77.0  # Use the latest stable tag
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate
+      # - id: terraform_tflint
+      # - id: terraform_checkov
+      # - id: check-merge-conflict
+      # - id: check-added-large-files
