@@ -148,7 +148,7 @@ resource "aws_iam_role_policy_attachment" "ecr_pull_policy" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.19"
+  version = "~> 5.21"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -160,9 +160,43 @@ module "vpc" {
   enable_nat_gateway = true
   single_nat_gateway = true
 
-  public_subnet_tags = { "kubernetes.io/role/elb" = 1 }
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = 1
+  }
 
-  private_subnet_tags = { "kubernetes.io/role/internal-elb" = 1 }
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = 1
+  }
+
+  enable_flow_log                                 = true
+  flow_log_destination_type                       = "cloud-watch-logs"
+  flow_log_cloudwatch_log_group_retention_in_days = 30
 
   tags = local.tags
+}
+
+
+
+resource "aws_iam_role" "vpc_flow_logs" {
+  name = "${local.name}-vpc-flow-logs-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
+        Principal = {
+          Service = "vpc-flow-logs.amazonaws.com"
+        }
+      }
+    ]
+  })
+
+  tags = local.tags
+}
+
+resource "aws_iam_role_policy_attachment" "vpc_flow_logs_policy" {
+  role       = aws_iam_role.vpc_flow_logs.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonVPCFlowLogsRole"
 }
