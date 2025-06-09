@@ -1,0 +1,31 @@
+replicaCount: 2
+
+image:
+  repository: omotebi/ecommerce-app
+  tag: latest
+  pullPolicy: IfNotPresent
+
+containerPort: 8080
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+ingress:
+  enabled: true
+  ingressClassName: "nginx"  # use "alb" if using AWS ALB Ingress Controller
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  host: ecommerce.omotebi.co.uk  # Replace with your actual domain
