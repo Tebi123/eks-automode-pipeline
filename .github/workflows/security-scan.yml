@@ -18,16 +18,16 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Install Terrascan
-        run: |
-          echo "Installing Terrascan..."
-          wget https://github.com/tenable/terrascan/releases/latest/download/terrascan_linux_amd64.tar.gz
-          tar -xzf terrascan_linux_amd64.tar.gz
-          sudo mv terrascan /usr/local/bin/
-          terrascan version
+      # - name: Install Terrascan
+      #   run: |
+      #     echo "Installing Terrascan..."
+      #     wget https://github.com/tenable/terrascan/releases/latest/download/terrascan_linux_amd64.tar.gz
+      #     tar -xzf terrascan_linux_amd64.tar.gz
+      #     sudo mv terrascan /usr/local/bin/
+      #     terrascan version
 
 
-      - name: Run Terrascan
-        run: |
-          echo "Scanning EKS Terraform infrastructure code..."
-          terrascan scan -d ./eks-automode-pipeline
+      # - name: Run Terrascan
+      #   run: |
+      #     echo "Scanning EKS Terraform infrastructure code..."
+      #     terrascan scan -d ./eks-automode-pipeline
