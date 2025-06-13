@@ -1,0 +1,44 @@
+controller:
+  nodeSelector:
+    dedicated: argocd
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "argocd"
+      effect: "NoSchedule"
+
+repoServer:
+  nodeSelector:
+    dedicated: argocd
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "argocd"
+      effect: "NoSchedule"
+
+server:
+  nodeSelector:
+    dedicated: argocd
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "argocd"
+      effect: "NoSchedule"
+
+dex:
+  nodeSelector:
+    dedicated: argocd
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "argocd"
+      effect: "NoSchedule"
+
+applicationSet:
+  nodeSelector:
+    dedicated: argocd
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "argocd"
+      effect: "NoSchedule"
