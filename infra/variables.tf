@@ -28,7 +28,7 @@ variable "tags" {
 variable "azs" {
   description = "List of availability zones to use"
   type        = list(string)
-  default     = ["eu-west-2a"] # Adjust as needed
+  default     = ["eu-west-2"] # Adjust as needed
 }
 
 variable "private_subnet_tags" {
