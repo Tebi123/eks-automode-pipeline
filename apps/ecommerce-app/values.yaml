@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: omotebi/ecommerce-app
+  repository: tebi667/ecommerce-app
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -29,3 +29,6 @@ ingress:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /
   host: ecommerce.omotebi.co.uk  # Replace with your actual domain
+
+serviceAccount:
+  create: true
